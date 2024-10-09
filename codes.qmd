@@ -1,0 +1,117 @@
+---
+title: "Codes"
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## Visualization1:
+
+library(ggplot2)
+
+library(dplyr)
+
+library(tidyr)
+
+library(plotly)
+
+### Redesign 1:
+
+library(plotly)
+
+library(readxl)
+
+debts \<- read_excel("debts.xlsx")
+
+bar_plot \<- plot_ly( data = debts, x = \~State, y =
+\~`Total Liabilities (Billion $)`, type = 'bar', name = 'Total
+Liabilities', marker = list(color = 'darkolivegreen') \# Example with
+named color ) %\>% layout(title = 'Total Liabilities by Debt', xaxis =
+list(title = 'State'), yaxis = list(title = 'Total Liabilities (Billion
+\$)'))
+
+bar_plot
+
+### Redesign 2:
+
+library(plotly)
+
+library(dplyr)
+
+library(readxl)
+
+debts \<- read_excel("debts.xlsx")
+
+custom_colorscale \<- list( c(0, 'lightyellow'),\
+c(0.25, 'khaki'),\
+c(0.5, 'gold'),\
+c(0.75, 'darkgoldenrod'), c(1, 'darkred'))
+
+choropleth_map \<- plot_ly( data = debts, locations = \~State,
+locationmode = 'USA-states', z = \~`Total Liabilities (Billion $)`, type
+= 'choropleth', colorscale = custom_colorscale, colorbar = list(title =
+"Total Liabilities (Billion \$)") ) %\>% layout( title = 'Total
+Liabilities by U.S. State', geo = list( scope = 'usa', projection =
+list(type = 'albers usa'), showlakes = TRUE, lakecolor = toRGB('white')
+) )
+
+choropleth_map
+
+## Visualization 2:
+
+library(readxl)
+
+library(ggplot2)
+
+library(plotly)
+
+library(dplyr)
+
+### Redesign 1:
+
+library(plotly)
+
+library(readxl)
+
+data1 \<- read_excel("data1.xlsx")
+
+p1 \<- ggplot(data1, aes(x = reorder(Country, -Number_of_Tourists), y =
+Number_of_Tourists, fill = Continent)) + geom_bar(stat = "identity") +
+coord_flip() + scale_y_continuous(labels = scales::comma) + labs(title =
+"Number of Tourists by Country", x = "Country", y = "Number of
+Tourists") + scale_fill_manual(values = c( "Asia" = "chocolate4",
+"Europe" = "cadetblue", "North America" = "darkmagenta", "South America"
+= "darkseagreen4", "Africa" = "aquamarine4", "Oceania" = "brown" ))
+theme_minimal()
+
+interactive_plot \<- ggplotly(p1)
+
+interactive_plot
+
+### Redesign 2:
+
+library(rnaturalearth)
+
+library(dplyr)
+
+library(plotly)
+
+library(readxl)
+
+data1 \<- read_excel("data1.xlsx")
+
+world \<- ne_countries(scale = "medium", returnclass = "sf")
+
+merged_data \<- world %\>% left_join(data1, by = c("name" = "Country"))
+
+p \<- ggplot(merged_data) + geom_sf(aes(fill = Number_of_Tourists, text
+= paste("Country:", name, "<br>Tourists:",
+scales::comma(Number_of_Tourists)))) + scale_fill_gradientn( colors =
+c("lightblue", "yellow", "red", "chocolate4"), \# Define a custom color
+gradient labels = scales::comma ) +\
+labs(title = "Number of Tourists by Country", fill = "Tourists") +
+theme_minimal()
+
+interactive_map \<- ggplotly(p, tooltip = "text")
+
+interactive_map

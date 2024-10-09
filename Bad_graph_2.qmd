@@ -1,0 +1,150 @@
+---
+title: "Redesign 2"
+---
+
+#### Bad Graph 2
+
+**Tourist Generating Countries to United States of America**
+
+![](Bad_graph_2.jpg){align="middle"}
+
+This graph is a U-shaped ribbon design that represents the top 20 tourist-generating countries that visit the United States.
+
+-   **Key Elements**: Country Flags and Names Each country is representative of their flag, name, and Tourist Number.
+
+-   **Ribbon design**: The ribbon does the work of visually linking the countries; however, it does not have any specific predefined structure to the design.
+
+-   **Order**: By the number of tourists, though hard to decipher from this visualization
+
+#### Why is this graph not effective?
+
+1.  **Confusing Design**: Ribbon hard to follow for tourist numbers. Perhaps a bar chart could be more intuitive.
+
+2.  **Cluttered**: Twisting path and tightly fit labels in graph make graph hard to read.
+
+3.  **Inconsistent Scaling**: Because the size of countries has nothing to do with the amount of tourists, large discrepancies - such as between Canada and Mexico - are not resolved.
+
+4.  **No Visual Metric**: The number of tourists is shown only as text; there is no visual metric (like a bar).
+
+5.  **Non-Linear Layout**: There's no hierarchy in the ribbon - hence comparisons are challenging.
+
+6.  **Over-Use of Colors**: Colors add no information, resulting in a graph that is more complicated than it needs to be.
+
+#### Revised Chart - 1
+
+```{r, echo=FALSE,  message=FALSE, warning=FALSE}
+library(plotly)
+library(readxl)
+data1 <- read_excel("data1.xlsx")
+
+p1 <- ggplot(data1, aes(x = reorder(Country, -Number_of_Tourists), y = Number_of_Tourists, fill = Continent)) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_y_continuous(labels = scales::comma) + 
+  labs(title = "Number of Tourists by Country", x = "Country", y = "Number of Tourists") +
+  scale_fill_manual(values = c(
+    "Asia" = "chocolate4", 
+    "Europe" = "cadetblue", 
+    "North America" = "darkmagenta", 
+    "South America" = "darkseagreen4", 
+    "Africa" = "aquamarine4", 
+    "Oceania" = "brown"
+  )) +
+  theme_minimal()
+
+interactive_plot <- ggplotly(p1)
+interactive_plot  
+
+```
+
+#### Why is this a good chart?
+
+1.  **Clear design**: it is very easy to compare tourist figures by means of the horizontal bars. Long bars mean more tourists and provide faster feedback visually
+
+2.  **Color-coding by Continent**: Each color represents the different continents that those countries belong to, such as yellow for Europe and red for Asia. That allows a viewer to see at a glance where the most tourists come from.
+
+3.  **Good Use of Available Space**: Bars are placed in order with no unnecessary crowding or overlapping.
+
+4.  **Balance in Visualization:** The largest values (Mexico and Canada) leap off the screen without overpowering the smaller values.
+
+5.  **Easy Legend**: The color coding is described in the legend, and by it, one may easily relate every country to its respective continent.
+
+#### Graph Insights
+
+From this "Number of Tourists by Country" bar chart, we can identify that:
+
+1.  Top Contributors: The United States receives the most tourists from Canada and Mexico, represented by the longest bars.
+
+2.  Continental Breakdown: North America is in the lead, colored in green, followed by Europe, colored in yellow, then Asia in red.
+
+3.  Smaller Contributors: Countries like New Zealand and Switzerland send less tourists, as depicted by shorter bars.
+
+4.  Easy comparison: Such a chart makes it easy to compare the number of tourists from one country with those from another.
+
+5.  Global representation: The graph represents the tourists coming to the United States from the rest of the world.
+
+This map very clearly shows which countries send the most and fewest numbers of tourists to the United States, arranged by continents.
+
+#### Revised Chart - 2
+
+```{r, echo=FALSE,  message=FALSE, warning=FALSE}
+
+library(rnaturalearth)
+library(dplyr)
+library(plotly)
+library(readxl)
+data1 <- read_excel("data1.xlsx")
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+
+merged_data <- world %>%
+  left_join(data1, by = c("name" = "Country"))
+
+
+# Using a custom gradient with multiple colors
+p <- ggplot(merged_data) +
+  geom_sf(aes(fill = Number_of_Tourists, text = paste("Country:", name, "<br>Tourists:", scales::comma(Number_of_Tourists)))) +
+  scale_fill_gradientn(
+    colors = c("lightblue", "yellow", "red", "chocolate4"), 
+    labels = scales::comma
+  ) +  
+  labs(title = "Number of Tourists by Country",
+       fill = "Tourists") +
+  theme_minimal()
+
+
+interactive_map <- ggplotly(p, tooltip = "text")
+
+interactive_map
+
+
+```
+
+#### Why is this a good chart?
+
+1.  **Global Overview**: It clearly shows which nations send the most tourists.
+
+2.  **Color Gradient**: The blue-to-yellow scale clearly indicates which countries have more tourists, like the United States, Canada, and Australia.
+
+3.  **Easy-to-understand Legend**: Itself shows how much the number of tourists for each color is. 
+
+4.  **Efficient Usage of Space**: It shows all countries on this map without it being confusing or cluttered. 
+
+5.  **Simplicity in Design**: Its minimalist design helps draw the attention of a viewer to presented data.
+
+#### Graph Insights
+
+The "Number of Tourists by Country" heat map may indicate the following:
+
+1.  Top Contributors: Canada, Mexico, and Australia will lead the numbers of tourists coming to the United States. These will be shown in yellow.
+
+2.  Regional Trends: The highest numbers of tourists are found to come from the regions of North America, Europe, and Oceania.
+
+3.  Lower Contributors: Somber colors will be used for countries in Africa and parts of Asia, which yield lower numbers.
+
+4.  Easy Comparison: The gradient in color will ensure ease of comparison of each country's contribution of tourists in a swift manner.
+
+5.  Global View: The map represents the fact that tourists are coming from all the corners of the world, though with huge differences in quantity.
+
+This map aptly identifies which countries send the most and least tourists to the United States of America in a world-wide context.

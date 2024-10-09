@@ -1,0 +1,21 @@
+---
+title: "STAT 515 Midterm Project"
+image: DataVisualisation.jpg
+about:
+  template: trestles
+  image-shape: rectangle
+  image-width: 50em
+  links:
+    - text: Rushika Mail
+      icon: envelope
+      href: mailto:rarvapal@gmu.edu
+    - text: Sainath Email
+      icon: envelope
+      href: mailto:skammiti@gmu.edu
+    - text: Rushika GitHub
+      icon: github
+      href: https://github.com/Rushika8
+    - text: Sainath GitHub
+      icon: github
+      href: https://github.com/sainathkammiti
+---

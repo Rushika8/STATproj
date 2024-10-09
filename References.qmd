@@ -1,0 +1,16 @@
+---
+title: "References"
+---
+
+References link for Bad graphs
+
+1.  <https://en.wikipedia.org/wiki/World_Tourism_rankings>
+2.  <https://howmuch.net/articles/the-us-debt-map-2020>
+
+References Used to construct Refined Graphs
+
+1.  <https://quarto.org/docs/output-formats/html-themes.html#overview>
+2.  <https://r-graph-gallery.com/>
+3.  <https://rviews.rstudio.com/2019/03/06/intro-to-graph-analysis/>
+4.  
+5.  

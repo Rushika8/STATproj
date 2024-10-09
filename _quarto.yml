@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  navbar:
+    left:
+      - index.qmd
+      - about.qmd
+      - Bad_graph_1.qmd
+      - Bad_graph_2.qmd
+      - video_presentation.qmd
+      - codes.qmd
+      - References.qmd
+  
+
+format:
+  html:
+    theme: darkly
+    css: styles.css
+    toc: true
+    toc-location: left
+    toc-depth: 5
+
+editor: visual
+
